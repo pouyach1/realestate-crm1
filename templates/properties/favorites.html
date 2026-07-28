@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}علاقه‌مندی‌ها - Estate Basic{% endblock %}
+
+{% block content %}
+<div class="page-header mb-4">
+    <h1 class="dashboard-title">❤️ علاقه‌مندی‌های من</h1>
+    <p class="dashboard-subtitle">املاکی که ذخیره کرده‌اید</p>
+</div>
+
+{% if favorites %}
+<div class="row g-4">
+    {% for fav in favorites %}
+    <div class="col-lg-4 col-md-6">
+        <a href="{% url 'properties:detail' fav.property.pk %}" style="text-decoration: none; color: inherit;">
+            <div class="property-card">
+                <div class="card-img-wrapper">
+                    {% if fav.property.images.first %}
+                    <img src="{{ fav.property.images.first.image.url }}" alt="{{ fav.property.title }}">
+                    {% else %}
+                    <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop" alt="{{ fav.property.title }}">
+                    {% endif %}
+                    <div class="card-img-overlay-bottom">
+                        <h3 class="property-title">{{ fav.property.title }}</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p class="property-address"><i class="bi bi-geo-alt"></i> {{ fav.property.address|truncatechars:30 }}</p>
+                    <span class="property-price">{{ fav.property.formatted_price }}</span>
+                </div>
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="text-center py-5">
+    <i class="bi bi-heart" style="font-size: 5rem; color: #ddd;"></i>
+    <h4>هنوز علاقه‌مندی ندارید</h4>
+    <p class="text-muted">از صفحه اصلی املاک مورد نظر را ذخیره کنید</p>
+    <a href="{% url 'pages:home' %}" class="btn-gold">مشاهده املاک</a>
+</div>
+{% endif %}
+{% endblock %}

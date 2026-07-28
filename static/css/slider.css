@@ -1,0 +1,258 @@
+/* ========================================
+   اسلایدر فروش ویژه - نسخه حرفه‌ای
+   ======================================== */
+.urgent-section {
+    background: linear-gradient(135deg, #fff9f0 0%, #fff5e6 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.urgent-section::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 200px;
+    height: 200px;
+    background: rgba(212, 174, 99, 0.06);
+    border-radius: 50%;
+}
+
+.urgent-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.urgent-icon {
+    width: 48px;
+    height: 48px;
+    background: #e74c3c;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 22px;
+    animation: pulse-red 2s infinite;
+}
+
+@keyframes pulse-red {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4); }
+    50% { box-shadow: 0 0 0 15px rgba(231, 76, 60, 0); }
+}
+
+.urgent-slider {
+    position: relative;
+    padding: 0 50px;
+}
+
+.urgent-slider .cards-row {
+    display: flex;
+    gap: 24px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 20px 10px;
+    scrollbar-width: none;
+}
+
+.urgent-slider .cards-row::-webkit-scrollbar {
+    display: none;
+}
+
+/* کارت */
+.urgent-card {
+    flex: 0 0 320px;
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    position: relative;
+}
+
+.urgent-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+}
+
+/* ریبون قرمز گوشه کارت */
+.urgent-card::after {
+    content: 'فروش فوری';
+    position: absolute;
+    top: 18px;
+    right: -32px;
+    background: #e74c3c;
+    color: #fff;
+    padding: 6px 40px;
+    font-size: 11px;
+    font-weight: 700;
+    transform: rotate(45deg);
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
+}
+
+/* باکس عکس */
+.urgent-card .img-box {
+    height: 220px;
+    position: relative;
+    overflow: hidden;
+}
+
+.urgent-card .img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.urgent-card:hover .img-box img {
+    transform: scale(1.08);
+}
+
+/* overlay روی عکس */
+.urgent-card .img-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
+}
+
+/* قیمت روی عکس */
+.urgent-card .price-tag {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    background: rgba(255,255,255,0.95);
+    color: #e74c3c;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+/* باکس اطلاعات */
+.urgent-card .info-box {
+    padding: 20px;
+}
+
+.urgent-card .info-box .prop-type {
+    display: inline-block;
+    background: #f0f0f0;
+    color: #666;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    margin-bottom: 8px;
+}
+
+.urgent-card .info-box h5 {
+    margin: 0 0 6px 0;
+    font-size: 17px;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.urgent-card .info-box .location {
+    color: #999;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.urgent-card .info-box .meta-row {
+    display: flex;
+    gap: 16px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.urgent-card .info-box .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: #888;
+}
+
+.urgent-card .info-box .meta-item i {
+    color: #D4AE63;
+}
+
+/* دکمه‌های اسکرول */
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: #fff;
+    color: #333;
+    border: 2px solid #eee;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 5;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.slider-btn:hover {
+    background: #D4AE63;
+    color: #fff;
+    border-color: #D4AE63;
+    box-shadow: 0 8px 20px rgba(212, 174, 99, 0.3);
+}
+
+.slider-btn.prev {
+    right: 10px;
+}
+
+.slider-btn.next {
+    left: 10px;
+}
+
+/* نقطه‌های نشانگر */
+.slider-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.slider-dots .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ddd;
+    transition: all 0.3s ease;
+}
+
+.slider-dots .dot.active {
+    background: #D4AE63;
+    width: 24px;
+    border-radius: 4px;
+}
+
+@media (max-width: 767px) {
+    .urgent-card {
+        flex: 0 0 270px;
+    }
+    
+    .urgent-slider {
+        padding: 0 30px;
+    }
+    
+    .slider-btn {
+        width: 36px;
+        height: 36px;
+    }
+}

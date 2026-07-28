@@ -1,0 +1,44 @@
+{% extends 'base_public.html' %}
+{% load static %}
+
+{% block title %}تماس با ما - Estate Basic{% endblock %}
+
+{% block content %}
+
+<section style="background: linear-gradient(135deg, #162233 0%, #1a2a44 100%); padding: 120px 0 60px;">
+    <div class="container text-center">
+        <span class="section-badge">تماس با ما</span>
+        <h1 class="text-white mb-3" style="font-family: var(--font-display); font-size: 48px;">در ارتباط باشید</h1>
+        <p class="text-white opacity-75 mx-auto" style="max-width: 600px;">ما همیشه آماده پاسخگویی به شما هستیم</p>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-lg-4">
+                <div style="background: #fff; padding: 30px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); text-align: center;">
+                    <i class="bi bi-geo-alt" style="font-size: 2rem; color: #D4AE63;"></i>
+                    <h5 class="mt-3">آدرس</h5>
+                    <p class="text-muted">تهران، خیابان ولیعصر، نبش کوچه املاک</p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div style="background: #fff; padding: 30px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); text-align: center;">
+                    <i class="bi bi-telephone" style="font-size: 2rem; color: #D4AE63;"></i>
+                    <h5 class="mt-3">تلفن</h5>
+                    <p class="text-muted">۱۲۳۴۵۶۷۸ - ۰۲۱</p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div style="background: #fff; padding: 30px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); text-align: center;">
+                    <i class="bi bi-envelope" style="font-size: 2rem; color: #D4AE63;"></i>
+                    <h5 class="mt-3">ایمیل</h5>
+                    <p class="text-muted">info@estatebasic.com</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base_public.html' %}
+{% load static %}
+
+{% block title %}خروج - Estate Basic{% endblock %}
+
+{% block content %}
+<section style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #f9fafb;">
+    <div class="container text-center">
+        <div style="max-width: 420px; margin: 0 auto;">
+            <div style="width: 90px; height: 90px; background: rgba(212,174,99,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                <i class="bi bi-check-circle" style="font-size: 3rem; color: #D4AE63;"></i>
+            </div>
+            <h2 style="font-weight: 800; font-size: 28px; color: #162233; margin-top: 24px;">خارج شدید</h2>
+            <p style="color: #888; margin: 12px 0 28px; font-size: 15px;">از اینکه از Estate Basic استفاده کردید متشکریم. منتظر بازگشت شما هستیم.</p>
+            <a href="{% url 'accounts:login' %}" style="display: inline-block; background: #D4AE63; color: #fff; padding: 14px 32px; border-radius: 12px; font-weight: 700; text-decoration: none; transition: all 0.3s;">
+                <i class="bi bi-box-arrow-in-left me-2"></i> ورود مجدد
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

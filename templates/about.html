@@ -1,0 +1,479 @@
+{% extends 'base_public.html' %}
+{% load static %}
+
+{% block title %}درباره ما - Estate Basic{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* ========================================
+       HERO ABOUT
+       ======================================== */
+    .about-hero {
+        background: radial-gradient(ellipse at center, #1a2a44 0%, #0d1520 100%);
+        position: relative;
+        overflow: hidden;
+        min-height: 70vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .about-hero::before {
+        content: '';
+        position: absolute;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(212,174,99,0.08) 0%, transparent 70%);
+        top: -200px;
+        right: -200px;
+        animation: float 8s ease-in-out infinite;
+    }
+    
+    .about-hero::after {
+        content: '';
+        position: absolute;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(212,174,99,0.05) 0%, transparent 70%);
+        bottom: -100px;
+        left: -100px;
+        animation: float 6s ease-in-out infinite reverse;
+    }
+    
+    @keyframes float {
+        0%, 100% { transform: translate(0, 0); }
+        50% { transform: translate(30px, -30px); }
+    }
+    
+    .particles {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+    }
+    
+    .particle {
+        position: absolute;
+        width: 3px;
+        height: 3px;
+        background: rgba(212,174,99,0.3);
+        border-radius: 50%;
+        animation: particleFloat 10s infinite;
+    }
+    
+    .particle:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+    .particle:nth-child(2) { left: 25%; top: 60%; animation-delay: 1s; }
+    .particle:nth-child(3) { left: 50%; top: 30%; animation-delay: 2s; }
+    .particle:nth-child(4) { left: 70%; top: 70%; animation-delay: 3s; }
+    .particle:nth-child(5) { left: 85%; top: 15%; animation-delay: 4s; }
+    .particle:nth-child(6) { left: 15%; top: 80%; animation-delay: 5s; }
+    .particle:nth-child(7) { left: 60%; top: 10%; animation-delay: 6s; }
+    .particle:nth-child(8) { left: 40%; top: 50%; animation-delay: 7s; }
+    .particle:nth-child(9) { left: 80%; top: 40%; animation-delay: 8s; }
+    .particle:nth-child(10) { left: 30%; top: 90%; animation-delay: 9s; }
+    
+    @keyframes particleFloat {
+        0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+        20% { opacity: 1; }
+        80% { opacity: 0; }
+        100% { transform: translateY(-100px) translateX(50px); opacity: 0; }
+    }
+
+    /* ========================================
+       STATS
+       ======================================== */
+    .stat-card-about {
+        background: #fff;
+        border-radius: 24px;
+        padding: 40px 24px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        cursor: default;
+    }
+    
+    .stat-card-about::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #D4AE63, #f0d78c, #D4AE63);
+    }
+    
+    .stat-card-about:hover {
+        transform: translateY(-12px) scale(1.02);
+        box-shadow: 0 30px 60px rgba(0,0,0,0.12);
+    }
+    
+    .stat-icon-about {
+        width: 70px;
+        height: 70px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 16px;
+        font-size: 30px;
+        transition: all 0.3s;
+    }
+    
+    .stat-card-about:hover .stat-icon-about {
+        transform: rotate(10deg) scale(1.1);
+    }
+    
+    .counter {
+        font-size: 56px;
+        font-weight: 900;
+        background: linear-gradient(135deg, #D4AE63 0%, #f0d78c 50%, #b8941f 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    /* ========================================
+       TIMELINE
+       ======================================== */
+    .timeline-wrapper {
+        position: relative;
+        padding: 40px 0;
+    }
+    
+    .timeline-wrapper::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 50%;
+        width: 3px;
+        height: 100%;
+        background: linear-gradient(to bottom, transparent, #D4AE63 20%, #D4AE63 80%, transparent);
+        transform: translateX(50%);
+    }
+    
+    .timeline-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 80px;
+        position: relative;
+    }
+    
+    .timeline-row:nth-child(odd) { flex-direction: row-reverse; }
+    
+    .timeline-badge {
+        width: 50px;
+        height: 50px;
+        background: #D4AE63;
+        border-radius: 50%;
+        position: absolute;
+        right: 50%;
+        transform: translateX(50%);
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 20px;
+        box-shadow: 0 0 0 10px rgba(212,174,99,0.2);
+        transition: all 0.3s;
+    }
+    
+    .timeline-row:hover .timeline-badge {
+        box-shadow: 0 0 0 20px rgba(212,174,99,0.1);
+        transform: translateX(50%) scale(1.2);
+    }
+    
+    .timeline-card {
+        width: 42%;
+        background: #fff;
+        border-radius: 20px;
+        padding: 28px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        transition: all 0.3s;
+    }
+    
+    .timeline-card:hover {
+        box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        transform: translateY(-4px);
+    }
+
+    /* ========================================
+       VALUES
+       ======================================== */
+    .value-card {
+        text-align: center;
+        padding: 40px 24px;
+        transition: all 0.4s;
+    }
+    
+    .value-card:hover { transform: translateY(-8px); }
+    
+    .value-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 34px;
+        transition: all 0.4s;
+    }
+    
+    .value-card:hover .value-icon {
+        transform: rotateY(180deg);
+    }
+
+    /* ========================================
+       RESPONSIVE
+       ======================================== */
+    @media (max-width: 991px) {
+        .counter { font-size: 40px; }
+        .timeline-wrapper::before { right: 30px; }
+        .timeline-row { flex-direction: column !important; align-items: flex-start; padding-right: 60px; margin-bottom: 40px; }
+        .timeline-badge { right: 30px; }
+        .timeline-card { width: 100%; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- ==========================================
+     HERO
+     ========================================== -->
+<section class="about-hero">
+    <div class="particles">
+        <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+        <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+        <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+    
+    <div class="container text-center" style="position: relative; z-index: 2;">
+        <span class="section-badge" data-aos="fade-up" style="color: #D4AE63; border: 1px solid rgba(212,174,99,0.3); padding: 8px 20px; border-radius: 50px;">
+            <i class="bi bi-star-fill me-1"></i> درباره ما
+        </span>
+        <h1 class="text-white" data-aos="fade-up" data-aos-delay="100" style="font-family: var(--font-display); font-size: 64px; margin: 20px 0;">
+            ما <span style="color: #D4AE63; font-style: italic;">Estate Basic</span> هستیم
+        </h1>
+        <p class="text-white opacity-75 mx-auto" data-aos="fade-up" data-aos-delay="200" style="max-width: 650px; font-size: 18px; line-height: 2;">
+            پیشرو در ارائه راهکارهای هوشمند مدیریت املاک در ایران. 
+            ما به شما کمک می‌کنیم سریع‌تر بفروشید، هوشمندانه‌تر مدیریت کنید.
+        </p>
+    </div>
+</section>
+
+<!-- ==========================================
+     STATS
+     ========================================== -->
+<section style="padding: 80px 0; margin-top: -60px; position: relative; z-index: 3;">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-3 col-6" data-aos="zoom-in">
+                <div class="stat-card-about">
+                    <div class="stat-icon-about" style="background: rgba(212,174,99,0.1);">
+                        <i class="bi bi-building" style="color: #D4AE63;"></i>
+                    </div>
+                    <div class="counter" data-target="500">0</div>
+                    <p class="text-muted mt-2">ملک ثبت شده</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6" data-aos="zoom-in" data-aos-delay="100">
+                <div class="stat-card-about">
+                    <div class="stat-icon-about" style="background: rgba(46,204,113,0.1);">
+                        <i class="bi bi-emoji-smile" style="color: #2ecc71;"></i>
+                    </div>
+                    <div class="counter" data-target="200">0</div>
+                    <p class="text-muted mt-2">مشتری راضی</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6" data-aos="zoom-in" data-aos-delay="200">
+                <div class="stat-card-about">
+                    <div class="stat-icon-about" style="background: rgba(52,152,219,0.1);">
+                        <i class="bi bi-people" style="color: #3498db;"></i>
+                    </div>
+                    <div class="counter" data-target="50">0</div>
+                    <p class="text-muted mt-2">آژانس فعال</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6" data-aos="zoom-in" data-aos-delay="300">
+                <div class="stat-card-about">
+                    <div class="stat-icon-about" style="background: rgba(231,76,60,0.1);">
+                        <i class="bi bi-headset" style="color: #e74c3c;"></i>
+                    </div>
+                    <span style="font-size: 40px; font-weight: 900; color: #e74c3c;">24/7</span>
+                    <p class="text-muted mt-2">پشتیبانی</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     MISSION
+     ========================================== -->
+<section class="section-padding">
+    <div class="container">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6" data-aos="fade-right">
+                <span class="section-badge"><i class="bi bi-bullseye me-1"></i> ماموریت ما</span>
+                <h2 class="section-title">مدیریت املاک را متحول می‌کنیم</h2>
+                <p style="color: #666; line-height: 2.2; font-size: 16px;">
+                    ما باور داریم که هر آژانس املاک لایق بهترین ابزارهاست. 
+                    تیم متخصص ما با ترکیب دانش فنی و تجربه بازار املاک ایران، 
+                    محصولی ساخته که واقعاً به دردتان می‌خورد.
+                </p>
+                <div class="d-flex gap-3 mt-4">
+                    <span style="font-size: 40px;"><i class="bi bi-bullseye" style="color: #D4AE63;"></i></span>
+                    <span style="font-size: 40px;"><i class="bi bi-shield-check" style="color: #2ecc71;"></i></span>
+                    <span style="font-size: 40px;"><i class="bi bi-trophy" style="color: #f39c12;"></i></span>
+                </div>
+            </div>
+            <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
+                <div style="position: relative;">
+                    <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&h=400&fit=crop" 
+                         style="width: 100%; border-radius: 24px; box-shadow: 0 30px 60px rgba(0,0,0,0.12);">
+                    <div style="position: absolute; bottom: -20px; right: -20px; background: #D4AE63; color: #fff; padding: 16px 24px; border-radius: 16px; font-weight: 700;">
+                        <i class="bi bi-calendar-check me-1"></i> از ۱۴۰۰ تا امروز
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     VALUES
+     ========================================== -->
+<section class="section-padding" style="background: #f9fafb;">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <span class="section-badge"><i class="bi bi-gem me-1"></i> ارزش‌های ما</span>
+            <h2 class="section-title">چه چیزی ما را متفاوت می‌کند</h2>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="value-card">
+                    <div class="value-icon" style="background: rgba(212,174,99,0.1); color: #D4AE63;">
+                        <i class="bi bi-lightning-charge"></i>
+                    </div>
+                    <h5>سرعت</h5>
+                    <p class="text-muted">راه‌اندازی در کمتر از ۱۰ دقیقه</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="value-card">
+                    <div class="value-icon" style="background: rgba(46,204,113,0.1); color: #2ecc71;">
+                        <i class="bi bi-shield-lock"></i>
+                    </div>
+                    <h5>امنیت</h5>
+                    <p class="text-muted">اطلاعات شما نزد ما محفوظ است</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="value-card">
+                    <div class="value-icon" style="background: rgba(52,152,219,0.1); color: #3498db;">
+                        <i class="bi bi-palette"></i>
+                    </div>
+                    <h5>زیبایی</h5>
+                    <p class="text-muted">طراحی لوکس و حرفه‌ای</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     TIMELINE
+     ========================================== -->
+<section class="section-padding">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <span class="section-badge"><i class="bi bi-graph-up me-1"></i> مسیر رشد</span>
+            <h2 class="section-title">داستان موفقیت ما</h2>
+        </div>
+        
+        <div class="timeline-wrapper">
+            <div class="timeline-row" data-aos="fade-up">
+                <div class="timeline-badge"><i class="bi bi-lightbulb"></i></div>
+                <div class="timeline-card">
+                    <small style="color: #D4AE63; font-weight: 700;">۱۴۰۰</small>
+                    <h5>جرقه شروع</h5>
+                    <p class="text-muted">تیم ۳ نفره در یک زیرزمین کوچک</p>
+                </div>
+            </div>
+            <div class="timeline-row" data-aos="fade-up">
+                <div class="timeline-badge"><i class="bi bi-rocket-takeoff"></i></div>
+                <div class="timeline-card">
+                    <small style="color: #D4AE63; font-weight: 700;">۱۴۰۱</small>
+                    <h5>پرتاب</h5>
+                    <p class="text-muted">۱۰۰ مشتری اول و رشد ۳۰۰٪</p>
+                </div>
+            </div>
+            <div class="timeline-row" data-aos="fade-up">
+                <div class="timeline-badge"><i class="bi bi-star"></i></div>
+                <div class="timeline-card">
+                    <small style="color: #D4AE63; font-weight: 700;">۱۴۰۲</small>
+                    <h5>طلوع ستاره</h5>
+                    <p class="text-muted">نسخه‌های پرو و پریمیوم</p>
+                </div>
+            </div>
+            <div class="timeline-row" data-aos="fade-up">
+                <div class="timeline-badge"><i class="bi bi-trophy"></i></div>
+                <div class="timeline-card">
+                    <small style="color: #D4AE63; font-weight: 700;">امروز</small>
+                    <h5>قهرمان بازار</h5>
+                    <p class="text-muted">۵۰۰+ ملک فعال، ۲۰۰+ مشتری، و رشد روزانه</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     CTA
+     ========================================== -->
+<section class="section-padding text-center" style="background: linear-gradient(135deg, #162233, #1a2a44);">
+    <div class="container" data-aos="zoom-in">
+        <h2 class="text-white mb-3" style="font-family: var(--font-display); font-size: 42px;">آماده‌اید به خانواده ما بپیوندید؟</h2>
+        <p class="text-white opacity-75 mb-4">همین امروز شروع کنید و تفاوت را احساس کنید</p>
+        <a href="{% url 'accounts:register' %}" class="btn-gold btn-lg">
+            <i class="bi bi-rocket-takeoff me-2"></i> شروع رایگان
+        </a>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Counter animation
+    function animateCounters() {
+        document.querySelectorAll('.counter').forEach(counter => {
+            const target = +counter.dataset.target;
+            if (!target || counter.classList.contains('animated')) return;
+            
+            const update = () => {
+                const current = +counter.innerText.replace(/[^0-9]/g, '');
+                const increment = target / 40;
+                if (current < target) {
+                    counter.innerText = Math.ceil(current + increment);
+                    requestAnimationFrame(update);
+                } else {
+                    counter.innerText = target;
+                    counter.classList.add('animated');
+                }
+            };
+            
+            if (counter.getBoundingClientRect().top < window.innerHeight) {
+                update();
+            }
+        });
+    }
+    window.addEventListener('scroll', animateCounters);
+    window.addEventListener('load', animateCounters);
+</script>
+{% endblock %}

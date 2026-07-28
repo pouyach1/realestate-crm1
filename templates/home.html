@@ -1,0 +1,317 @@
+{% extends 'base_public.html' %}
+{% load static %}
+
+{% block title %}Estate Basic - املاک لوکس{% endblock %}
+
+{% block content %}
+
+<!-- ==========================================
+     HERO SECTION
+     ========================================== -->
+<section class="hero-section">
+    <img src="{% static 'images/hero-bg.jpg' %}" alt="ویلای لوکس" class="hero-bg" loading="eager">
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content w-100">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-7">
+                    <h1 class="hero-headline" data-aos="fade-up">
+                        اقامتگاه‌هایی <br>
+                        <span class="italic-gold">فراتر</span> <br>
+                        از تصور.
+                    </h1>
+                    <p class="hero-description" data-aos="fade-up" data-aos-delay="200">
+                        املاک استثنایی در بهترین موقعیت‌ها. از ویلاهای لوکس تا آپارتمان‌های مدرن،
+                        فضای ایده‌آل خود را با Estate Basic پیدا کنید.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="floating-search d-none d-md-flex" title="جستجوی سریع" data-aos="fade-left" data-aos-delay="400">
+        <i class="bi bi-search"></i>
+    </button>
+
+    <div class="scroll-indicator d-none d-lg-flex">
+        <span>اسکرول</span>
+        <div class="scroll-line"></div>
+    </div>
+</section>
+
+<!-- ==========================================
+     SEARCH BAR
+     ========================================== -->
+<div class="search-bar-wrapper" data-aos="fade-up" data-aos-delay="300">
+    <div class="container">
+        <form action="{% url 'pages:search' %}" method="get" class="search-bar">
+            <div class="search-bar-row">
+                <div class="search-bar-field">
+                    <i class="bi bi-search"></i>
+                    <input type="text" name="q" placeholder="جستجو در همه املاک...">
+                </div>
+                <div class="search-bar-divider"></div>
+                <div class="search-bar-field">
+                    <i class="bi bi-building"></i>
+                    <select name="property_type">
+                        <option value="">نوع ملک</option>
+                        <option value="villa">ویلا</option>
+                        <option value="apartment">آپارتمان</option>
+                        <option value="office">دفتر کار</option>
+                        <option value="land">زمین</option>
+                    </select>
+                </div>
+                <div class="search-bar-divider"></div>
+                <div class="search-bar-field">
+                    <i class="bi bi-cash"></i>
+                    <select name="price_range">
+                        <option value="">محدوده قیمت</option>
+                        <option value="500m-1b">۵۰۰ میلیون - ۱ میلیارد</option>
+                        <option value="1b-5b">۱ - ۵ میلیارد</option>
+                        <option value="5b-10b">۵ - ۱۰ میلیارد</option>
+                        <option value="10b+">بالای ۱۰ میلیارد</option>
+                    </select>
+                </div>
+                <button type="submit" class="search-bar-btn">
+                    <i class="bi bi-search"></i>
+                    <span>جستجو</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ==========================================
+     فروش ویژه
+     ========================================== -->
+{% if urgent_properties %}
+<section class="section-padding urgent-section">
+    <div class="container">
+        <div class="urgent-header" data-aos="fade-up">
+            <div class="urgent-icon">
+                <i class="bi bi-lightning-charge"></i>
+            </div>
+            <div>
+                <h2 style="font-family: var(--font-display); font-size: 38px; margin: 0; color: #1a1a1a;">فروش ویژه</h2>
+                <p style="color: #999; margin: 4px 0 0; font-size: 14px;">فرصت‌های طلایی با قیمت استثنایی</p>
+            </div>
+        </div>
+
+        <div class="urgent-slider" data-aos="fade-up" data-aos-delay="200">
+            <div class="cards-row" id="urgentRow">
+                {% for property in urgent_properties %}
+                <a href="{% url 'properties:detail' property.pk %}" class="urgent-card">
+                    <div class="img-box">
+                        {% if property.images.first %}
+                        <img src="{{ property.images.first.image.url }}" loading="lazy" alt="{{ property.title }}">
+                        {% else %}
+                        <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&h=400&fit=crop" loading="lazy" alt="{{ property.title }}">
+                        {% endif %}
+                        <div class="img-overlay"></div>
+                        <span class="price-tag">
+                            {% if user.is_authenticated %}{{ property.formatted_price }}{% else %}{{ property.display_price }}{% endif %}
+                        </span>
+                    </div>
+                    <div class="info-box">
+                        <span class="prop-type">{{ property.get_property_type_display }}</span>
+                        <h5>{{ property.title }}</h5>
+                        <p class="location"><i class="bi bi-geo-alt"></i> {{ property.address|truncatechars:25 }}</p>
+                        <div class="meta-row">
+                            <span class="meta-item"><i class="bi bi-arrows-fullscreen"></i> {{ property.area|floatformat:0 }} متر</span>
+                            <span class="meta-item"><i class="bi bi-building"></i> {{ property.get_property_type_display }}</span>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+            <button class="slider-btn prev" onclick="document.getElementById('urgentRow').scrollBy({left: -340, behavior: 'smooth'})">
+                <i class="bi bi-chevron-right"></i>
+            </button>
+            <button class="slider-btn next" onclick="document.getElementById('urgentRow').scrollBy({left: 340, behavior: 'smooth'})">
+                <i class="bi bi-chevron-left"></i>
+            </button>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- ==========================================
+     جدیدترین
+     ========================================== -->
+{% if latest_properties %}
+<section class="section-padding" style="background: #fff;">
+    <div class="container">
+        <div class="row align-items-end mb-5" data-aos="fade-up">
+            <div class="col-md-8">
+                <span class="section-badge"><i class="bi bi-clock-history me-1"></i> تازه‌ها</span>
+                <h2 class="section-title">جدیدترین ملک‌ها</h2>
+                <p class="section-subtitle">آخرین املاک اضافه شده به مجموعه ما</p>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            {% for property in latest_properties %}
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:50 }}">
+                <div class="property-card">
+                    <div class="card-img-wrapper">
+                        <span class="property-badge" style="background: #3498db;">جدید</span>
+                        <button class="wishlist-btn favorite-btn" data-property-id="{{ property.id }}" title="افزودن به علاقه‌مندی‌ها">
+                            <i class="bi bi-heart"></i>
+                        </button>
+                        {% if property.images.first %}
+                        <img src="{{ property.images.first.image.url }}" loading="lazy" alt="{{ property.title }}">
+                        {% else %}
+                        <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop" loading="lazy" alt="{{ property.title }}">
+                        {% endif %}
+                        <div class="card-img-overlay-bottom">
+                            <h3 class="property-title">{{ property.title }}</h3>
+                            <span class="property-address-inline"><i class="bi bi-geo-alt-fill"></i> {{ property.address|truncatechars:30 }}</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="property-features">
+                            <span class="feature-item"><i class="bi bi-door-open-fill"></i> {{ property.bedrooms }} خواب</span>
+                            <span class="feature-item"><i class="bi bi-droplet-fill"></i> {{ property.bathrooms }} حمام</span>
+                            <span class="feature-item"><i class="bi bi-arrows-fullscreen"></i> {{ property.area|floatformat:0 }} متر</span>
+                        </div>
+                        <div class="property-footer">
+                            {% if user.is_authenticated %}
+                                <span class="property-price">{{ property.formatted_price }}</span>
+                            {% else %}
+                                <div>
+                                    <span class="property-price" style="font-size: 16px;">{{ property.display_price }}</span>
+                                    <small style="display: block; color: #D4AE63; font-size: 11px;"><i class="bi bi-lock-fill"></i> قیمت دقیق پس از ورود</small>
+                                </div>
+                            {% endif %}
+                            <a href="{% url 'properties:detail' property.pk %}" class="detail-btn">جزئیات <i class="bi bi-arrow-left"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- ==========================================
+     املاک ویژه
+     ========================================== -->
+{% if properties %}
+<section class="section-padding" style="background: var(--off-white);">
+    <div class="container">
+        <div class="row align-items-end mb-5" data-aos="fade-up">
+            <div class="col-md-8">
+                <span class="section-badge"><i class="bi bi-star-fill me-1"></i> نمونه کارها</span>
+                <h2 class="section-title">املاک ویژه</h2>
+                <p class="section-subtitle">منتخبی از بهترین املاک برای خاص‌پسندترین مشتریان</p>
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                <a href="{% url 'pages:search' %}" class="view-all-link">مشاهده همه املاک <i class="bi bi-arrow-left"></i></a>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            {% for property in properties %}
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:50 }}">
+                <div class="property-card">
+                    <div class="card-img-wrapper">
+                        <span class="property-badge" style="background: {% if property.status == 'available' %}#2ecc71{% elif property.status == 'sold' %}#e74c3c{% else %}#f39c12{% endif %};">
+                            {{ property.get_status_display }}
+                        </span>
+                        <button class="wishlist-btn favorite-btn" data-property-id="{{ property.id }}" title="افزودن به علاقه‌مندی‌ها">
+                            <i class="bi bi-heart"></i>
+                        </button>
+                        {% if property.images.first %}
+                        <img src="{{ property.images.first.image.url }}" loading="lazy" alt="{{ property.title }}">
+                        {% else %}
+                        <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop" loading="lazy" alt="{{ property.title }}">
+                        {% endif %}
+                        <div class="card-img-overlay-bottom">
+                            <h3 class="property-title">{{ property.title }}</h3>
+                            <span class="property-address-inline"><i class="bi bi-geo-alt-fill"></i> {{ property.address|truncatechars:30 }}</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="property-features">
+                            <span class="feature-item"><i class="bi bi-door-open-fill"></i> {{ property.bedrooms }} خواب</span>
+                            <span class="feature-item"><i class="bi bi-droplet-fill"></i> {{ property.bathrooms }} حمام</span>
+                            <span class="feature-item"><i class="bi bi-arrows-fullscreen"></i> {{ property.area|floatformat:0 }} متر</span>
+                        </div>
+                        {% if property.parking or property.has_elevator %}
+                        <div class="property-amenities">
+                            {% if property.parking %}<span><i class="bi bi-check-circle-fill"></i> پارکینگ</span>{% endif %}
+                            {% if property.has_elevator %}<span><i class="bi bi-check-circle-fill"></i> آسانسور</span>{% endif %}
+                        </div>
+                        {% endif %}
+                        <div class="property-footer">
+                            {% if user.is_authenticated %}
+                                <span class="property-price">{{ property.formatted_price }}</span>
+                            {% else %}
+                                <div>
+                                    <span class="property-price" style="font-size: 16px;">{{ property.display_price }}</span>
+                                    <small style="display: block; color: #D4AE63; font-size: 11px;"><i class="bi bi-lock-fill"></i> قیمت دقیق پس از ورود</small>
+                                </div>
+                            {% endif %}
+                            <a href="{% url 'properties:detail' property.pk %}" class="detail-btn">جزئیات <i class="bi bi-arrow-left"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- ==========================================
+     فروخته شده
+     ========================================== -->
+{% if sold_properties %}
+<section class="section-padding" style="background: #f9fafb;">
+    <div class="container">
+        <div data-aos="fade-up">
+            <span class="section-badge"><i class="bi bi-trophy-fill me-1"></i> افتخارات</span>
+            <h2 class="section-title">ملک‌های فروخته شده</h2>
+            <p class="section-subtitle">املاکی که با موفقیت به فروش رسیدند</p>
+        </div>
+        <div class="row g-4 mt-3">
+            {% for property in sold_properties %}
+            <div class="col-lg-3 col-md-4 col-6" data-aos="zoom-in" data-aos-delay="{{ forloop.counter|add:50 }}">
+                <div style="background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                    {% if property.images.first %}
+                    <img src="{{ property.images.first.image.url }}" loading="lazy" style="width: 100%; height: 160px; object-fit: cover;" alt="{{ property.title }}">
+                    {% else %}
+                    <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&h=300&fit=crop" loading="lazy" style="width: 100%; height: 160px; object-fit: cover;" alt="{{ property.title }}">
+                    {% endif %}
+                    <div style="padding: 12px;">
+                        <span class="badge bg-danger mb-2">فروخته شده</span>
+                        <h6 style="margin: 6px 0 2px; font-weight: 700;">{{ property.title }}</h6>
+                        <small class="text-muted">{{ property.formatted_price }}</small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- ==========================================
+     CTA
+     ========================================== -->
+<section class="section-padding text-center" style="background: var(--navy-dark);">
+    <div class="container" data-aos="zoom-in">
+        <span class="section-badge"><i class="bi bi-rocket-takeoff me-1"></i> شروع کنید</span>
+        <h2 class="section-title text-white mb-3">آماده پیدا کردن ملک رویایی خود هستید؟</h2>
+        <p class="text-white opacity-75 mb-4 mx-auto" style="max-width: 500px;">
+            تیم کارشناسان ما آماده راهنمایی شما در تمام مراحل خرید، فروش یا اجاره ملک هستند.
+        </p>
+        <a href="{% url 'accounts:register' %}" class="btn-gold">
+            <i class="bi bi-telephone me-2"></i> درخواست مشاوره
+        </a>
+    </div>
+</section>
+
+{% endblock %}

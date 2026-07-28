@@ -1,0 +1,60 @@
+<footer class="footer-section">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-4 mb-4 mb-lg-0">
+                <h5 class="footer-brand">
+                    <i class="bi bi-building"></i> Estate<span style="color: var(--gold); font-style: italic;">Basic</span>
+                </h5>
+                <p class="footer-description">
+                    نرم‌افزار مدیریت املاک حرفه‌ای برای آژانس‌های مدرن.
+                    کشف، مدیریت و بستن معاملات با ظرافت و کارایی.
+                </p>
+            </div>
+
+            <div class="col-lg-2 col-md-4">
+                <h6 class="footer-heading">دسترسی سریع</h6>
+                <ul class="footer-links">
+                    <li><a href="{% url 'pages:home' %}">خانه</a></li>
+                    <li><a href="{% url 'pages:search' %}">املاک</a></li>
+                    <li><a href="{% url 'pages:about' %}">درباره ما</a></li>
+                    <li><a href="{% url 'pages:contact' %}">تماس با ما</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-2 col-md-4">
+                <h6 class="footer-heading">املاک</h6>
+                <ul class="footer-links">
+                    <li><a href="{% url 'pages:search' %}?property_type=villa">ویلا</a></li>
+                    <li><a href="{% url 'pages:search' %}?property_type=apartment">آپارتمان</a></li>
+                    <li><a href="{% url 'pages:search' %}?property_type=office">دفتر کار</a></li>
+                    <li><a href="{% url 'pages:search' %}?property_type=land">زمین</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-4 col-md-4">
+                <h6 class="footer-heading">تماس با ما</h6>
+                <ul class="footer-contact">
+                    <li><i class="bi bi-geo-alt"></i><span>تهران، خیابان ولیعصر، نبش کوچه املاک</span></li>
+                    <li><i class="bi bi-telephone"></i><span>۱۲۳۴۵۶۷۸ - ۰۲۱</span></li>
+                    <li><i class="bi bi-envelope"></i><span>info@estatebasic.com</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="footer-copy">&copy; ۲۰۲۶ Estate Basic. تمام حقوق محفوظ است.</p>
+                </div>
+                <div class="col-md-6">
+                    <div class="footer-social">
+                        <a href="#"><i class="bi bi-facebook"></i></a>
+                        <a href="#"><i class="bi bi-instagram"></i></a>
+                        <a href="#"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>

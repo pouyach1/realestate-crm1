@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}املاک - Estate Basic{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="dashboard-title">املاک</h1>
+        <p class="dashboard-subtitle">مدیریت مجموعه املاک شما</p>
+    </div>
+    <a href="{% url 'properties:create' %}" class="btn-gold">
+        <i class="bi bi-plus-lg"></i> افزودن ملک
+    </a>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-2 align-items-end">
+            <div class="col-md-3">
+                <label style="font-size: 11px; color: #999; font-weight: 600;">جستجو</label>
+                {{ filter.form.search }}
+            </div>
+            <div class="col-md-2">
+                <label style="font-size: 11px; color: #999; font-weight: 600;">نوع</label>
+                {{ filter.form.property_type }}
+            </div>
+            <div class="col-md-2">
+                <label style="font-size: 11px; color: #999; font-weight: 600;">وضعیت</label>
+                {{ filter.form.status }}
+            </div>
+            <div class="col-md-2">
+                <label style="font-size: 11px; color: #999; font-weight: 600;">حداقل قیمت</label>
+                {{ filter.form.price_min }}
+            </div>
+            <div class="col-md-2">
+                <label style="font-size: 11px; color: #999; font-weight: 600;">حداکثر</label>
+                {{ filter.form.price_max }}
+            </div>
+            <div class="col-md-1 d-flex gap-1">
+                <button type="submit" class="btn-gold btn-sm" style="padding: 6px 12px;"><i class="bi bi-funnel"></i></button>
+                <a href="{% url 'properties:list' %}" class="btn btn-outline-secondary btn-sm" style="padding: 6px 10px;"><i class="bi bi-x"></i></a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card" style="overflow: hidden;">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead style="background: #162233; color: #fff;">
+                <tr>
+                    <th class="px-3 py-3 text-center">#</th>
+                    <th class="px-3 py-3">عنوان</th>
+                    <th class="px-3 py-3">نوع</th>
+                    <th class="px-3 py-3">قیمت</th>
+                    <th class="px-3 py-3">متراژ</th>
+                    <th class="px-3 py-3">وضعیت</th>
+                    <th class="px-3 py-3">تاریخ</th>
+                    <th class="px-3 py-3 text-center" style="width: 130px;">عملیات</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for property in properties %}
+                <tr>
+                    <td class="px-3 py-3 text-center text-muted" style="width: 40px;">{{ forloop.counter }}</td>
+                    <td class="px-3 py-3" style="font-weight: 600;">
+                        <a href="{% url 'properties:detail' property.pk %}" style="color: #162233; text-decoration: none;">{{ property.title }}</a>
+                    </td>
+                    <td class="px-3 py-3 text-muted">{{ property.get_property_type_display }}</td>
+                    <td class="px-3 py-3 text-muted">{{ property.formatted_price }}</td>
+                    <td class="px-3 py-3 text-muted">{{ property.area }}m²</td>
+                    <td class="px-3 py-3">
+                        <span style="background: {% if property.status == 'available' %}#d4edda{% elif property.status == 'sold' %}#f8d7da{% else %}#fff3cd{% endif %}; color: {% if property.status == 'available' %}#155724{% elif property.status == 'sold' %}#721c24{% else %}#856404{% endif %}; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; white-space: nowrap;">{{ property.get_status_display }}</span>
+                    </td>
+                    <td class="px-3 py-3 text-muted" style="white-space: nowrap;">{{ property.created_at|date:"Y/m/d" }}</td>
+                    <td class="px-3 py-3 text-center" style="white-space: nowrap;">
+                        <a href="{% url 'properties:detail' property.pk %}" class="btn btn-sm" style="color: #3498db; padding: 4px 8px;" title="مشاهده"><i class="bi bi-eye"></i></a>
+                        <a href="{% url 'properties:update' property.pk %}" class="btn btn-sm" style="color: #f39c12; padding: 4px 8px;" title="ویرایش"><i class="bi bi-pencil"></i></a>
+                        <a href="{% url 'properties:delete' property.pk %}" class="btn btn-sm" style="color: #e74c3c; padding: 4px 8px;" title="حذف"><i class="bi bi-trash"></i></a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="8" class="text-center py-5"><i class="bi bi-building" style="font-size: 3rem; color: #ddd;"></i><h5 class="mt-3">ملکی ثبت نشده</h5><a href="{% url 'properties:create' %}" class="btn-gold mt-2">افزودن اولین ملک</a></td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% if is_paginated %}{% include 'includes/pagination.html' %}{% endif %}
+{% endblock %}

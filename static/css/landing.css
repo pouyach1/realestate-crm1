@@ -1,0 +1,712 @@
+/* ========================================
+   ESTATE BASIC - LUXURY REAL ESTATE
+   نسخه نهایی و کامل
+   ======================================== */
+
+:root {
+    --navy-dark: #162233;
+    --navy-darker: #111C2A;
+    --gold: #D4AE63;
+    --gold-hover: #C49A47;
+    --gold-dark: #B98D3E;
+    --white: #FFFFFF;
+    --off-white: #FAF8F5;
+    --text-dark: #222222;
+    --text-gray: #757575;
+    --text-light: #B8C0CC;
+    --border-light: #ECECEC;
+    --overlay-dark: rgba(18, 28, 40, 0.45);
+    --font-display: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+    --font-body: 'Vazirmatn', 'Inter', sans-serif;
+    --section-padding: 120px;
+    --container-max: 1320px;
+    --navbar-height: 90px;
+    --btn-radius: 2px;
+    --transition-speed: 300ms;
+}
+body {
+    font-family: 'Vazirmatn', sans-serif;
+    ...
+}
+/* ========================================
+   RESET & BASE
+   ======================================== */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.8;
+    color: var(--text-gray);
+    background: var(--white);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    color: var(--text-dark);
+    font-weight: 300;
+    line-height: 1.15;
+}
+
+p { margin-bottom: 0; }
+a { text-decoration: none; transition: all var(--transition-speed) ease; }
+img { max-width: 100%; height: auto; }
+.container { max-width: var(--container-max); }
+
+/* ========================================
+   NAVBAR
+   ======================================== */
+.navbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--navbar-height);
+    z-index: 999;
+    padding: 0;
+    transition: all var(--transition-speed) ease;
+}
+
+.navbar.scrolled {
+    position: fixed;
+    background: rgba(22, 34, 51, 0.98);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+}
+
+.navbar .container { display: flex; align-items: center; height: var(--navbar-height); }
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--white);
+    flex-shrink: 0;
+}
+
+.navbar-brand .brand-icon { color: var(--gold); font-size: 1.5rem; margin-left: 10px; }
+.navbar-brand .brand-accent { color: var(--gold); font-weight: 400; font-style: italic; }
+.navbar-nav { gap: 5px; }
+
+.navbar .nav-link {
+    color: rgba(255,255,255,0.85);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 18px;
+    position: relative;
+}
+
+.navbar .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 18px;
+    right: 18px;
+    height: 1px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transition: transform var(--transition-speed) ease;
+}
+
+.navbar .nav-link:hover::after,
+.navbar .nav-link:hover { color: var(--white); }
+.navbar .nav-link.active { color: var(--white); }
+
+.navbar .btn-nav {
+    font-size: 13px;
+    font-weight: 600;
+    padding: 14px 28px;
+    border-radius: var(--btn-radius);
+    background: var(--gold);
+    color: var(--navy-dark);
+    border: none;
+    transition: all var(--transition-speed) ease;
+}
+
+.navbar .btn-nav:hover { background: var(--gold-hover); transform: translateY(-1px); }
+
+.navbar-toggler { border: 1px solid rgba(255,255,255,0.3); padding: 8px 10px; }
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255,255,255,0.8)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* ========================================
+   HERO SECTION
+   ======================================== */
+.hero-section {
+    position: relative;
+    min-height: 100vh;
+    min-height: max(100vh, 850px);
+    background: var(--navy-dark);
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+
+.hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--overlay-dark);
+    z-index: 1;
+}
+
+.hero-content { position: relative; z-index: 2; padding-top: var(--navbar-height); padding-bottom: 60px; }
+
+.hero-headline {
+    font-family: var(--font-display);
+    font-size: 72px;
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--white);
+    max-width: 650px;
+    margin-bottom: 24px;
+}
+
+.hero-headline .italic-gold { font-style: italic; font-weight: 400; color: var(--gold); }
+
+.hero-description {
+    font-size: 16px;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.85);
+    max-width: 470px;
+    margin-bottom: 40px;
+}
+
+/* ========================================
+   SEARCH BAR - زیر هدر
+   ======================================== */
+.search-bar-wrapper {
+    background: #fff;
+    padding: 0;
+    position: relative;
+    z-index: 10;
+    margin-top: -30px;
+}
+
+.search-bar {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.search-bar-row {
+    display: flex;
+    align-items: center;
+    padding: 4px;
+}
+
+.search-bar-field {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    gap: 10px;
+    min-width: 0;
+}
+
+.search-bar-field i {
+    color: #D4AE63;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.search-bar-field input,
+.search-bar-field select {
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 15px;
+    color: #333;
+    background: transparent;
+    font-family: var(--font-body);
+}
+
+.search-bar-field input::placeholder { color: #bbb; }
+
+.search-bar-field select {
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    color: #555;
+}
+
+.search-bar-divider {
+    width: 1px;
+    height: 32px;
+    background: #eee;
+    flex-shrink: 0;
+}
+
+.search-bar-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #D4AE63;
+    color: #fff;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 16px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.search-bar-btn:hover {
+    background: #c49a47;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(212, 174, 99, 0.3);
+}
+
+.search-bar-btn i { font-size: 18px; }
+
+/* ========================================
+   FLOATING SEARCH BUTTON
+   ======================================== */
+.floating-search {
+    position: absolute;
+    left: 40px;
+    bottom: 40px;
+    z-index: 3;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--gold);
+    color: var(--navy-dark);
+    border: none;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+    box-shadow: 0 8px 30px rgba(212,174,99,0.35);
+}
+
+.floating-search:hover {
+    background: var(--gold-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(212,174,99,0.5);
+}
+
+/* ========================================
+   SCROLL INDICATOR
+   ======================================== */
+.scroll-indicator {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    color: rgba(255,255,255,0.5);
+}
+
+.scroll-indicator span { font-size: 11px; letter-spacing: 2px; }
+
+.scroll-indicator .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+}
+
+/* ========================================
+   SECTIONS
+   ======================================== */
+.section-padding { padding: var(--section-padding) 0; }
+
+.section-badge {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    color: var(--gold);
+    margin-bottom: 16px;
+}
+
+.section-title {
+    font-family: var(--font-display);
+    font-size: 54px;
+    font-weight: 300;
+    line-height: 1.15;
+    color: var(--text-dark);
+    margin-bottom: 16px;
+}
+
+.section-subtitle { font-size: 16px; color: var(--text-gray); max-width: 500px; line-height: 1.8; }
+
+.view-all-link {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--gold);
+    transition: all var(--transition-speed) ease;
+}
+
+.view-all-link:hover { color: var(--gold-hover); }
+.view-all-link i { font-size: 0.8rem; margin-right: 6px; transition: transform var(--transition-speed) ease; }
+.view-all-link:hover i { transform: translateX(-4px); }
+
+/* ========================================
+   PROPERTY CARDS - حرفه‌ای
+   ======================================== */
+.property-card {
+    background: var(--white);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    transform: perspective(1000px) translateZ(0);
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+    position: relative;
+}
+
+.property-card:hover {
+    transform: perspective(1000px) translateZ(15px) translateY(-8px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.12);
+}
+
+/* عکس */
+.property-card .card-img-wrapper {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+}
+
+.property-card .card-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.property-card:hover .card-img-wrapper img {
+    transform: scale(1.08);
+}
+
+/* گرادینت روی عکس */
+.property-card .card-img-overlay-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 50px 20px 16px;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
+}
+
+/* برچسب وضعیت */
+.property-card .property-badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 20px;
+    z-index: 2;
+    backdrop-filter: blur(4px);
+    letter-spacing: 0.5px;
+}
+
+/* دکمه علاقه‌مندی */
+.property-card .wishlist-btn {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.9);
+    border: none;
+    color: #e74c3c;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.property-card .wishlist-btn:hover {
+    background: #e74c3c;
+    color: #fff;
+    transform: scale(1.1);
+}
+
+/* عنوان روی عکس */
+.property-card .property-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 4px;
+}
+
+/* آدرس زیر عنوان */
+.property-card .property-address-inline {
+    color: rgba(255,255,255,0.8);
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.property-card .property-address-inline i {
+    color: var(--gold);
+    font-size: 12px;
+}
+
+/* بدنه کارت */
+.property-card .card-body {
+    padding: 18px 20px;
+    background: var(--white);
+}
+
+/* مشخصات - ردیف اول */
+.property-card .property-features {
+    display: flex;
+    gap: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #f0f0f0;
+    margin-bottom: 12px;
+}
+
+.property-card .property-features .feature-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #666;
+    font-weight: 500;
+}
+
+.property-card .property-features .feature-item i {
+    color: var(--gold);
+    font-size: 16px;
+}
+
+/* امکانات - ردیف دوم */
+.property-card .property-amenities {
+    display: flex;
+    gap: 14px;
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 14px;
+}
+
+.property-card .property-amenities span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.property-card .property-amenities i {
+    color: #27ae60;
+    font-size: 12px;
+}
+
+/* ردیف قیمت و دکمه */
+.property-card .property-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.property-card .property-price {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy-dark);
+}
+
+.property-card .property-price small {
+    font-size: 12px;
+    color: #888;
+    font-weight: 400;
+    margin-right: 2px;
+}
+
+.property-card .detail-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--gold);
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.property-card .detail-btn:hover {
+    background: var(--gold-hover);
+    padding-left: 20px;
+}
+
+.property-card .detail-btn i {
+    font-size: 14px;
+    transition: transform 0.3s ease;
+}
+
+.property-card .detail-btn:hover i {
+    transform: translateX(-4px);
+}
+
+/* ========================================
+   BUTTONS
+   ======================================== */
+.btn-gold {
+    display: inline-block;
+    background: var(--gold);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 14px 28px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(212, 174, 99, 0.3);
+}
+
+.btn-gold:hover {
+    background: var(--gold-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(212, 174, 99, 0.5);
+}
+
+.btn-gold:active {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 10px rgba(212, 174, 99, 0.3);
+}
+
+.btn-outline-white {
+    display: inline-block;
+    background: transparent;
+    color: var(--white);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 14px 32px;
+    border-radius: var(--btn-radius);
+    border: 1.5px solid rgba(255,255,255,0.5);
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+}
+
+.btn-outline-white:hover { background: var(--white); color: var(--navy-dark); }
+
+/* ========================================
+   FOOTER
+   ======================================== */
+.footer-section { background: var(--navy-dark); color: var(--white); padding: 80px 0 0; }
+
+.footer-brand {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 16px;
+}
+
+.footer-description { font-size: 14px; color: var(--text-light); line-height: 1.7; }
+
+.footer-heading {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    color: var(--white);
+    margin-bottom: 24px;
+}
+
+.footer-links { list-style: none; padding: 0; margin: 0; }
+.footer-links li { margin-bottom: 12px; }
+.footer-links a { color: var(--text-light); font-size: 14px; transition: all var(--transition-speed) ease; }
+.footer-links a:hover { color: var(--gold); padding-right: 4px; }
+
+.footer-contact { list-style: none; padding: 0; margin: 0; }
+.footer-contact li { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; font-size: 14px; color: var(--text-light); }
+.footer-contact i { color: var(--gold); font-size: 1rem; margin-top: 2px; flex-shrink: 0; }
+
+.footer-bottom { margin-top: 60px; padding: 20px 0; border-top: 1px solid rgba(255,255,255,0.08); }
+.footer-copy { font-size: 13px; color: rgba(255,255,255,0.4); margin: 0; }
+
+.footer-social { display: flex; gap: 12px; justify-content: flex-end; }
+.footer-social a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 50%;
+    color: rgba(255,255,255,0.5);
+    font-size: 0.9rem;
+    transition: all var(--transition-speed) ease;
+}
+
+.footer-social a:hover { background: var(--gold); border-color: var(--gold); color: var(--navy-dark); }
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+@media (max-width: 1199px) {
+    .hero-headline { font-size: 56px; }
+    .section-title { font-size: 42px; }
+}
+
+@media (max-width: 991px) {
+    :root { --section-padding: 80px; --navbar-height: 70px; }
+    .navbar { background: rgba(22,34,51,0.98); position: fixed; }
+    .navbar .navbar-collapse { background: rgba(22,34,51,0.99); position: absolute; top: var(--navbar-height); left: 0; right: 0; padding: 20px; }
+    .navbar .navbar-nav { text-align: center; gap: 0; }
+    .navbar .nav-link { padding: 12px 0; font-size: 13px; }
+    .hero-headline { font-size: 42px; max-width: 100%; }
+    .hero-description { max-width: 100%; }
+    .section-title { font-size: 36px; }
+    .floating-search { left: 20px; bottom: 20px; width: 50px; height: 50px; }
+    .search-bar-wrapper { margin-top: -20px; padding: 0 15px; }
+    .search-bar-row { flex-wrap: wrap; gap: 8px; padding: 16px; }
+    .search-bar-field { flex: 1 1 100%; padding: 10px 14px; background: #f8f8f8; border-radius: 12px; }
+    .search-bar-divider { display: none; }
+    .search-bar-btn { width: 100%; justify-content: center; }
+}
+
+@media (max-width: 767px) {
+    :root { --section-padding: 60px; }
+    .hero-section { min-height: 100vh; min-height: 700px; }
+    .hero-headline { font-size: 32px; }
+    .section-title { font-size: 30px; }
+    .property-card .property-title { font-size: 20px; }
+    .footer-social { justify-content: center; margin-top: 12px; }
+    .search-bar-wrapper { margin-top: -15px; }
+}
+
+.navbar .nav-link.active,
+.navbar .nav-link.active:hover {
+    color: #fff !important;
+    opacity: 1 !important;
+}

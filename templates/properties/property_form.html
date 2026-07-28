@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{% if property %}ویرایش ملک{% else %}افزودن ملک{% endif %} - Estate Basic{% endblock %}
+
+{% block content %}
+<div class="page-header mb-4">
+    <h1 class="dashboard-title">{% if property %}✏️ ویرایش ملک{% else %}🏠 افزودن ملک جدید{% endif %}</h1>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body p-4">{% crispy form %}</div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        {% if property and image_form %}
+        <div class="card mb-4">
+            <div class="card-header"><h5 class="mb-0">📸 آپلود عکس جدید</h5></div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="upload_image" value="1">
+                    <div class="mb-3">{{ image_form.image }}</div>
+                    <div class="mb-3">{{ image_form.caption }}</div>
+                    <button type="submit" class="btn-gold w-100">آپلود</button>
+                </form>
+            </div>
+        </div>
+        
+        {% if images %}
+        <div class="card">
+            <div class="card-header"><h5 class="mb-0">🖼️ عکس‌های ملک</h5></div>
+            <div class="card-body">
+                <div class="row g-2">
+                    {% for img in images %}
+                    <div class="col-6">
+                        <img src="{{ img.image.url }}" class="img-fluid rounded" style="height: 100px; width: 100%; object-fit: cover; cursor: pointer;" onclick="openModal('{{ img.image.url }}')">
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endif %}
+    </div>
+</div>
+
+<a href="{% url 'properties:list' %}" class="btn btn-outline-secondary mt-3"><i class="bi bi-arrow-right me-2"></i> بازگشت</a>
+
+<div id="imageModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9999; cursor: zoom-out;" onclick="closeModal()">
+    <span style="position: absolute; top: 20px; right: 30px; color: #fff; font-size: 45px; cursor: pointer; z-index: 10000;">&times;</span>
+    <img id="modalImage" src="" style="max-width: 90%; max-height: 90%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); object-fit: contain;">
+</div>
+
+<script>
+function openModal(url) { document.getElementById('modalImage').src = url; document.getElementById('imageModal').style.display = 'block'; document.body.style.overflow = 'hidden'; }
+function closeModal() { document.getElementById('imageModal').style.display = 'none'; document.body.style.overflow = 'auto'; }
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
+</script>
+{% endblock %}

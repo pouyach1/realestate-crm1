@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block title %}داشبورد - Estate Basic{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="dashboard-title">داشبورد</h1>
+        <p class="dashboard-subtitle">خوش آمدید، {{ user.username }}</p>
+    </div>
+</div>
+
+{% if user.is_superuser %}
+<!-- آمار - فقط برای ادمین -->
+<div class="row g-4 mb-4">
+    <div class="col-xl-3 col-md-6">
+        <div class="stat-card">
+            <div class="stat-icon" style="background: rgba(212, 174, 99, 0.1);">
+                <i class="bi bi-people" style="color: #D4AE63; font-size: 1.5rem;"></i>
+            </div>
+            <div>
+                <h3 class="stat-number">{{ total_customers }}</h3>
+                <p class="stat-label">کل مشتری‌ها</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+        <div class="stat-card">
+            <div class="stat-icon" style="background: rgba(52, 152, 219, 0.1);">
+                <i class="bi bi-building" style="color: #3498db; font-size: 1.5rem;"></i>
+            </div>
+            <div>
+                <h3 class="stat-number">{{ total_properties }}</h3>
+                <p class="stat-label">کل املاک</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+        <div class="stat-card">
+            <div class="stat-icon" style="background: rgba(46, 204, 113, 0.1);">
+                <i class="bi bi-check-circle" style="color: #2ecc71; font-size: 1.5rem;"></i>
+            </div>
+            <div>
+                <h3 class="stat-number">{{ available_properties }}</h3>
+                <p class="stat-label">موجود</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+        <div class="stat-card">
+            <div class="stat-icon" style="background: rgba(231, 76, 60, 0.1);">
+                <i class="bi bi-tag" style="color: #e74c3c; font-size: 1.5rem;"></i>
+            </div>
+            <div>
+                <h3 class="stat-number">{{ sold_properties }}</h3>
+                <p class="stat-label">فروخته شده</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- دسترسی سریع - فقط ادمین -->
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-building me-2" style="color: #D4AE63;"></i>دسترسی سریع</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{% url 'customers:list' %}" class="btn btn-outline-secondary text-start">
+                        <i class="bi bi-people me-2"></i> مدیریت مشتری‌ها
+                    </a>
+                    <a href="{% url 'properties:list' %}" class="btn btn-outline-secondary text-start">
+                        <i class="bi bi-building me-2"></i> مدیریت املاک
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% else %}
+<!-- پنل کاربر عادی -->
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-house-heart me-2" style="color: #D4AE63;"></i>پنل کاربری</h5>
+            </div>
+            <div class="card-body text-center py-5">
+                <i class="bi bi-building" style="font-size: 4rem; color: #ddd;"></i>
+                <h4 class="mt-3">به Estate Basic خوش آمدید!</h4>
+                <p class="text-muted">برای مشاهده املاک و جستجو در سایت از لینک‌های زیر استفاده کنید.</p>
+                <div class="d-flex gap-2 justify-content-center mt-3">
+                    <a href="{% url 'pages:home' %}" class="btn-gold">
+                        <i class="bi bi-house"></i> صفحه اصلی
+                    </a>
+                    <a href="{% url 'pages:search' %}" class="btn-gold">
+                        <i class="bi bi-search"></i> جستجوی املاک
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

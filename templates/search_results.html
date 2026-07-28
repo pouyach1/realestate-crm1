@@ -1,0 +1,186 @@
+{% extends 'base_public.html' %}
+{% load static %}
+
+{% block title %}جستجوی املاک - Estate Basic{% endblock %}
+
+{% block content %}
+
+<!-- هدر جستجو -->
+<section style="background: linear-gradient(135deg, #162233 0%, #1a2a44 100%); padding: 100px 0 40px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="text-white mb-2" style="font-family: var(--font-display); font-size: 38px;">
+                    {% if search_query %}
+                        نتایج جستجو برای "<span style="color: var(--gold);">{{ search_query }}</span>"
+                    {% else %}
+                        همه املاک
+                    {% endif %}
+                </h1>
+                <p class="text-white opacity-75" style="font-size: 16px;">
+                    <i class="bi bi-building" style="color: var(--gold);"></i> 
+                    {{ total_results }} ملک پیدا شد
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- محتوای اصلی -->
+<section style="background: #f9fafb; padding: 40px 0 80px;">
+    <div class="container">
+        <div class="row g-4">
+            
+            <!-- سایدبار فیلتر -->
+            <div class="col-lg-3">
+                <div style="background: #fff; border-radius: 20px; padding: 24px; box-shadow: 0 4px 25px rgba(0,0,0,0.04); position: sticky; top: 100px; border: 1px solid #f0f0f0;">
+                    
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 24px;">
+                        <div style="width: 40px; height: 40px; background: rgba(212,174,99,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="bi bi-funnel-fill" style="color: var(--gold); font-size: 18px;"></i>
+                        </div>
+                        <h5 style="font-weight: 700; margin: 0; font-size: 16px;">فیلترها</h5>
+                    </div>
+                    
+                    <form method="get" action="{% url 'pages:search' %}">
+                        
+                        <div class="mb-3">
+                            <label style="font-size: 12px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: block;">جستجو</label>
+                            <div style="position: relative;">
+                                <i class="bi bi-search" style="position: absolute; top: 50%; left: 14px; transform: translateY(-50%); color: #ccc; font-size: 14px;"></i>
+                                <input type="text" name="q" value="{{ search_query }}" placeholder="عنوان یا آدرس..." 
+                                       style="width: 100%; padding: 11px 14px 11px 36px; border: 1.5px solid #e8e8e8; border-radius: 12px; font-size: 14px; background: #fafafa; outline: none;">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label style="font-size: 12px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: block;">نوع ملک</label>
+                            <select name="property_type" style="width: 100%; padding: 11px 14px; border: 1.5px solid #e8e8e8; border-radius: 12px; font-size: 14px; background: #fafafa; outline: none; cursor: pointer; appearance: none;">
+                                <option value="">همه انواع</option>
+                                <option value="apartment" {% if selected_type == 'apartment' %}selected{% endif %}>آپارتمان</option>
+                                <option value="villa" {% if selected_type == 'villa' %}selected{% endif %}>ویلا</option>
+                                <option value="office" {% if selected_type == 'office' %}selected{% endif %}>دفتر کار</option>
+                                <option value="land" {% if selected_type == 'land' %}selected{% endif %}>زمین</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label style="font-size: 12px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: block;">محدوده قیمت</label>
+                            <select name="price_range" style="width: 100%; padding: 11px 14px; border: 1.5px solid #e8e8e8; border-radius: 12px; font-size: 14px; background: #fafafa; outline: none; cursor: pointer; appearance: none;">
+                                <option value="">همه قیمت‌ها</option>
+                                <option value="500m-1b" {% if selected_price == '500m-1b' %}selected{% endif %}>۵۰۰ میلیون - ۱ میلیارد</option>
+                                <option value="1b-5b" {% if selected_price == '1b-5b' %}selected{% endif %}>۱ - ۵ میلیارد</option>
+                                <option value="5b-10b" {% if selected_price == '5b-10b' %}selected{% endif %}>۵ - ۱۰ میلیارد</option>
+                                <option value="10b+" {% if selected_price == '10b+' %}selected{% endif %}>بالای ۱۰ میلیارد</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" style="width: 100%; padding: 12px; background: var(--gold); color: #fff; border: none; border-radius: 12px; font-weight: 600; font-size: 14px; cursor: pointer; margin-bottom: 8px;">
+                            <i class="bi bi-search me-2"></i> جستجو
+                        </button>
+                        <a href="{% url 'pages:search' %}" style="display: block; text-align: center; padding: 10px; color: #888; text-decoration: none; font-size: 13px; border-radius: 12px;">
+                            <i class="bi bi-x-circle me-1"></i> پاک کردن فیلترها
+                        </a>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- نتایج -->
+            <div class="col-lg-9">
+                {% if properties %}
+                <div class="row g-4">
+                    {% for property in properties %}
+                    <div class="col-md-6">
+                        <a href="{% url 'properties:detail' property.pk %}" style="text-decoration: none; color: inherit;">
+                            <div style="display: flex; flex-direction: row; height: 220px; background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 15px rgba(0,0,0,0.04);">
+                                
+                                <!-- عکس -->
+                                <div style="width: 45%; flex-shrink: 0; position: relative; overflow: hidden;">
+                                    {% if property.images.first %}
+                                    <img src="{{ property.images.first.image.url }}" alt="{{ property.title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                    {% else %}
+                                    <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&h=300&fit=crop" alt="{{ property.title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                    {% endif %}
+                                    <span style="position: absolute; top: 10px; right: 10px; padding: 4px 10px; border-radius: 15px; font-size: 11px; font-weight: 600; color: #fff; background: {% if property.status == 'available' %}#2ecc71{% elif property.status == 'sold' %}#e74c3c{% else %}#f39c12{% endif %};">
+                                        {{ property.get_status_display }}
+                                    </span>
+                                </div>
+                                
+                                <!-- اطلاعات -->
+                                <div style="flex: 1; padding: 16px 18px; display: flex; flex-direction: column; justify-content: space-between;">
+                                    <div>
+                                        <h5 style="font-size: 16px; font-weight: 700; color: #162233; margin-bottom: 4px;">{{ property.title }}</h5>
+                                        <p style="font-size: 12px; color: #999; margin-bottom: 10px;">
+                                            <i class="bi bi-geo-alt-fill" style="color: var(--gold); font-size: 11px;"></i> {{ property.address|truncatechars:25 }}
+                                        </p>
+                                        <div style="display: flex; gap: 12px; font-size: 12px; color: #777;">
+                                            <span><i class="bi bi-door-open-fill" style="color: var(--gold);"></i> {{ property.bedrooms }}</span>
+                                            <span><i class="bi bi-droplet-fill" style="color: var(--gold);"></i> {{ property.bathrooms }}</span>
+                                            <span><i class="bi bi-arrows-fullscreen" style="color: var(--gold);"></i> {{ property.area|floatformat:0 }}متر</span>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+                                        {% if user.is_authenticated %}
+                                            <span style="font-weight: 700; font-size: 15px; color: #162233;">{{ property.formatted_price }}</span>
+                                        {% else %}
+                                            <div>
+                                                <span style="font-weight: 700; font-size: 14px; color: #162233;">{{ property.display_price }}</span>
+                                                <small style="display: block; color: #D4AE63; font-size: 10px;"><i class="bi bi-lock-fill"></i> ورود برای قیمت دقیق</small>
+                                            </div>
+                                        {% endif %}
+                                        <span style="color: var(--gold); font-size: 12px; font-weight: 600;">جزئیات <i class="bi bi-arrow-left"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <!-- صفحه‌بندی -->
+                {% if is_paginated %}
+                <nav class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}&q={{ search_query }}&property_type={{ selected_type }}&price_range={{ selected_price }}" style="border-radius: 10px; margin: 0 4px;">
+                                <i class="bi bi-chevron-right"></i>
+                            </a>
+                        </li>
+                        {% endif %}
+                        
+                        {% for num in page_obj.paginator.page_range %}
+                            {% if page_obj.number == num %}
+                            <li class="page-item active"><span class="page-link" style="background: var(--gold); border-color: var(--gold); border-radius: 10px; margin: 0 4px;">{{ num }}</span></li>
+                            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <li class="page-item"><a class="page-link" href="?page={{ num }}&q={{ search_query }}&property_type={{ selected_type }}&price_range={{ selected_price }}" style="border-radius: 10px; margin: 0 4px;">{{ num }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                        
+                        {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ search_query }}&property_type={{ selected_type }}&price_range={{ selected_price }}" style="border-radius: 10px; margin: 0 4px;">
+                                <i class="bi bi-chevron-left"></i>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
+                
+                {% else %}
+                <div class="text-center py-5">
+                    <div style="width: 100px; height: 100px; background: #f0f0f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                        <i class="bi bi-search" style="font-size: 40px; color: #ccc;"></i>
+                    </div>
+                    <h4 class="mt-4" style="font-weight: 700;">ملکی پیدا نشد</h4>
+                    <p class="text-muted">لطفاً فیلترهای دیگری را امتحان کنید</p>
+                </div>
+                {% endif %}
+            </div>
+            
+        </div>
+    </div>
+</section>
+
+{% endblock %}
