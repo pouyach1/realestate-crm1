@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import F
 from django.urls import reverse
 from django.contrib.auth.models import User
 
@@ -76,8 +77,8 @@ class Property(models.Model):
             return f"{int(price):,} تومان"
 
     def increase_view(self):
-        self.view_count += 1
-        self.save(update_fields=['view_count'])
+        Property.objects.filter(pk=self.pk).update(view_count=F('view_count') + 1)
+        self.refresh_from_db(fields=['view_count'])
 
     class Meta:
         ordering = ['-created_at']

@@ -11,11 +11,19 @@ class HomePageView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['properties'] = Property.objects.filter(
             status='available', is_featured=True
-            ).select_related().prefetch_related('images').order_by('-created_at')[:6]
-        context['urgent_properties'] = Property.objects.filter(status='available', is_urgent=True).order_by('-created_at')[:10]
-        context['latest_properties'] = Property.objects.filter(status='available').order_by('-created_at')[:6]
-        context['sold_properties'] = Property.objects.filter(status='sold').order_by('-created_at')[:6]
-        context['popular_properties'] = Property.objects.filter(status='available').order_by('-view_count')[:6]
+            ).prefetch_related('images').order_by('-created_at')[:6]
+        context['urgent_properties'] = Property.objects.filter(
+            status='available', is_urgent=True
+            ).prefetch_related('images').order_by('-created_at')[:10]
+        context['latest_properties'] = Property.objects.filter(
+            status='available'
+            ).prefetch_related('images').order_by('-created_at')[:6]
+        context['sold_properties'] = Property.objects.filter(
+            status='sold'
+            ).prefetch_related('images').order_by('-created_at')[:6]
+        context['popular_properties'] = Property.objects.filter(
+            status='available'
+            ).prefetch_related('images').order_by('-view_count')[:6]
         return context
 
 
@@ -46,7 +54,7 @@ class SearchResultsView(ListView):
             elif price_range == '10b+':
                 queryset = queryset.filter(price__gte=10000000000)
         
-        return queryset.order_by('-created_at')
+        return queryset.prefetch_related('images').order_by('-created_at')
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

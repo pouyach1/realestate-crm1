@@ -4,7 +4,7 @@ from django.views.generic import CreateView, UpdateView, DeleteView, DetailView,
 from django.contrib.messages.views import SuccessMessageMixin
 from django_filters.views import FilterView
 from django.contrib import messages
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.http import JsonResponse
 from django.views import View
 from .models import Property, PropertyImage, Favorite
@@ -78,8 +78,8 @@ class PropertyDeleteView(LoginRequiredMixin, SuperuserRequiredMixin, DeleteView)
 # ========================================
 # PUBLIC VIEWS
 # ========================================
-class PropertyDetailView(LoginRequiredMixin, DetailView):
-    """جزئیات ملک - قابل دیدن برای همه کاربران لاگین شده"""
+class PropertyDetailView(DetailView):
+    """جزئیات ملک - قابل مشاهده برای مهمان و کاربر لاگین‌شده (فقط خواندنی)"""
     model = Property
     template_name = 'properties/property_detail.html'
     context_object_name = 'property'
@@ -103,7 +103,7 @@ class ToggleFavoriteView(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
         property_id = request.POST.get('property_id')
-        property_obj = Property.objects.get(id=property_id)
+        property_obj = get_object_or_404(Property, id=property_id)
 
         fav, created = Favorite.objects.get_or_create(
             user=request.user,
@@ -124,4 +124,9 @@ class FavoriteListView(LoginRequiredMixin, ListView):
     context_object_name = 'favorites'
 
     def get_queryset(self):
-        return Favorite.objects.filter(user=self.request.user).order_by('-created_at')
+        return (
+            Favorite.objects.filter(user=self.request.user)
+            .select_related('property')
+            .prefetch_related('property__images')
+            .order_by('-created_at')
+        )
