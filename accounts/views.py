@@ -1,4 +1,6 @@
 from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth import password_validation
+from django.core.exceptions import ValidationError
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django import forms
@@ -38,9 +40,16 @@ class PersianUserCreationForm(forms.ModelForm):
         password2 = self.cleaned_data.get('password2')
         if password1 and password2 and password1 != password2:
             raise forms.ValidationError('دو رمز عبور وارد شده یکسان نیستند.')
-        if len(password2) < 8:
-            raise forms.ValidationError('رمز عبور باید حداقل ۸ کاراکتر باشد.')
         return password2
+
+    def _post_clean(self):
+        super()._post_clean()
+        password = self.cleaned_data.get('password2')
+        if password:
+            try:
+                password_validation.validate_password(password, self.instance)
+            except ValidationError as error:
+                self.add_error('password2', error)
     
     def save(self, commit=True):
         user = super().save(commit=False)
